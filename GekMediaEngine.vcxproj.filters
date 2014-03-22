@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\DeferredRenderer">
+      <UniqueIdentifier>{5935f633-bcbf-4765-9149-a2f02988eb05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DeferredRenderer">
+      <UniqueIdentifier>{8c212779-aec2-4cef-bdfd-9306e55ec800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{1a1feb97-bbc5-46d8-91c0-ca18d85867d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Vertex">
+      <UniqueIdentifier>{15f08a2b-878c-45c8-8b58-b2f1d61e8a6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shaders\Fragment">
+      <UniqueIdentifier>{8fb08690-077f-4cf2-9c6a-a9c60cf87cae}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\GBuffer.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LightMesh.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Shader.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Matrices.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ScreenQuadMesh.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StaticMesh.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DeferredRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Particle.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BoneMesh.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MeshCommon.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Controller.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShadowBuffer.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShadowMap.h">
+      <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GBuffer.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LightMesh.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Matrices.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StaticMesh.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DeferredRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Particle.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BoneMesh.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Controller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShadowBuffer.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShadowMap.cpp">
+      <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Shaders\DirectionalLightShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\PointLightShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\StaticMeshShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\StencilShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\DirectionalLightShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\PointLightShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\StaticMeshShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\StencilShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\BoneMeshShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\BoneMeshShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\ParticleShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\ParticleShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\StaticMeshShadowShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\StaticMeshShadowShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\BoneMeshShadowShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\BoneMeshShadowShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Data\Shaders\CascadedShadowShader.frag">
+      <Filter>Source Files\Shaders\Fragment</Filter>
+    </None>
+    <None Include="Data\Shaders\CascadedShadowShader.vert">
+      <Filter>Source Files\Shaders\Vertex</Filter>
+    </None>
+  </ItemGroup>
+</Project>

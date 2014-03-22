@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GekMediaEngine", "GekMediaEngine.vcxproj", "{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}.Debug|Win32.Build.0 = Debug|Win32
+		{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}.Release|Win32.ActiveCfg = Release|Win32
+		{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

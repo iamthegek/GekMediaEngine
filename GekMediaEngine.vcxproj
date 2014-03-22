@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8A61E098-7CB5-4EC0-9D83-8B9379B830B7}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>GekMediaEngine</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\Assimp\include;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\SFML-2.1\include;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glm;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glew-1.10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x86;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\SFML-2.1\lib;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glew-1.10.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;assimp.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\Assimp\include;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\SFML-2.1\include;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glm;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glew-1.10.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>C:\Program Files\Assimp\lib\x86;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\SFML-2.1\lib;C:\Users\Grady\Documents\GitHub\GekMediaEngine\Dependencies\glew-1.10.0\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;glew32.lib;assimp.lib;sfml-window.lib;sfml-audio.lib;sfml-graphics.lib;sfml-network.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\DeferredRenderer.h" />
+    <ClInclude Include="Source\GBuffer.h" />
+    <ClInclude Include="Source\Light.h" />
+    <ClInclude Include="Source\LightMesh.h" />
+    <ClInclude Include="Source\Matrices.h" />
+    <ClInclude Include="Source\MeshCommon.h" />
+    <ClInclude Include="Source\Particle.h" />
+    <ClInclude Include="Source\ScreenQuadMesh.h" />
+    <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\BoneMesh.h" />
+    <ClInclude Include="Source\ShadowBuffer.h" />
+    <ClInclude Include="Source\ShadowMap.h" />
+    <ClInclude Include="Source\StaticMesh.h" />
+    <ClInclude Include="Source\Texture.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\BoneMesh.cpp" />
+    <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\DeferredRenderer.cpp" />
+    <ClCompile Include="Source\GBuffer.cpp" />
+    <ClCompile Include="Source\Light.cpp" />
+    <ClCompile Include="Source\LightMesh.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Matrices.cpp" />
+    <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\ShadowBuffer.cpp" />
+    <ClCompile Include="Source\ShadowMap.cpp" />
+    <ClCompile Include="Source\StaticMesh.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Data\Shaders\BoneMeshShader.frag" />
+    <None Include="Data\Shaders\BoneMeshShader.vert" />
+    <None Include="Data\Shaders\BoneMeshShadowShader.frag" />
+    <None Include="Data\Shaders\BoneMeshShadowShader.vert" />
+    <None Include="Data\Shaders\CascadedShadowShader.frag" />
+    <None Include="Data\Shaders\CascadedShadowShader.vert" />
+    <None Include="Data\Shaders\DirectionalLightShader.frag" />
+    <None Include="Data\Shaders\DirectionalLightShader.vert" />
+    <None Include="Data\Shaders\ParticleShader.frag" />
+    <None Include="Data\Shaders\ParticleShader.vert" />
+    <None Include="Data\Shaders\PointLightShader.frag" />
+    <None Include="Data\Shaders\PointLightShader.vert" />
+    <None Include="Data\Shaders\StaticMeshShader.frag" />
+    <None Include="Data\Shaders\StaticMeshShader.vert" />
+    <None Include="Data\Shaders\StaticMeshShadowShader.frag" />
+    <None Include="Data\Shaders\StaticMeshShadowShader.vert" />
+    <None Include="Data\Shaders\StencilShader.frag" />
+    <None Include="Data\Shaders\StencilShader.vert" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
