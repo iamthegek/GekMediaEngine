@@ -2,6 +2,7 @@ GekMediaEngine
 ==============
 
 Libraries Used:
+
 	>SFML		find it @ http://www.sfml-dev.org/
 	>OpenGL		should already be on your pc
 	>GLEW		find it @ http://glew.sourceforge.net/
@@ -9,6 +10,7 @@ Libraries Used:
 	>Assimp		find it @ http://assimp.sourceforge.net/
 
 Where to find me elsewhere:
+
 	>http://youtube.com/iamthegek
 	>http://iamthegek.tumblr.com
 	>http://twitter.com/iamthegek
