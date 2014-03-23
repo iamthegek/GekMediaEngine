@@ -1,5 +1,6 @@
 #include "BoneMesh.h"
 #include <assert.h>
+#include <iostream>
 
 glm::mat4 AiMatrixToGlmMatrix(const aiMatrix4x4& m)
 {
@@ -12,13 +13,18 @@ glm::mat4 AiMatrixToGlmMatrix(const aiMatrix4x4& m)
 	return glm::transpose(ret);
 }
 
-glm::mat4 AiMatrixToGlmMatrix(const aiMatrix3x3& m)
+aiMatrix4x4 GlmMatrixToAiMatrix(const glm::mat4& m)
 {
-	glm::mat4 ret;
-	ret[0] = glm::vec4(m.a1, m.a2, m.a3, 0.0f); //1st column of ret = 1st row of m
-	ret[1] = glm::vec4(m.b1, m.b2, m.b3, 0.0f); //2nd column of ret = 2nd row of m
-	ret[2] = glm::vec4(m.c1, m.c2, m.c3, 0.0f); //3rd column of ret = 3rd row of m
-	ret[3] = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f); //4th column of ret = 4th row of m
+	glm::vec4 c0 = m[0];
+	glm::vec4 c1 = m[1];
+	glm::vec4 c2 = m[2];
+	glm::vec4 c3 = m[3];
+
+	aiMatrix4x4 ret;
+	ret.a1 = c0[0]; ret.a2 = c1[0]; ret.a3 = c2[0]; ret.a4 = c3[0];
+	ret.b1 = c0[1]; ret.b2 = c1[1]; ret.b3 = c2[1]; ret.b4 = c3[1];
+	ret.c1 = c0[2]; ret.c2 = c1[2]; ret.c3 = c2[2]; ret.c4 = c3[2];
+	ret.d1 = c0[3]; ret.d2 = c1[3]; ret.d3 = c2[3]; ret.d4 = c3[3];
 	return ret;
 }
 
@@ -72,10 +78,27 @@ void BoneMesh::AddNormalTexture(const std::string& Filename)
 		delete textures[1];
 	textures[1] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_NORMAL);
 }
+
 unsigned int BoneMesh::GetNumBones() const 
 { 
 	return numBones; 
 }
+
+unsigned int BoneMesh::GetBoneIndex(std::string BoneName) 
+{
+	return boneMapping[BoneName];
+}
+
+glm::mat4 BoneMesh::GetBoneMatrix(unsigned int index)
+{
+	return AiMatrixToGlmMatrix(boneInfo[index].FinalTransformation);
+}
+
+BoneMesh::BoneInfo* BoneMesh::GetBoneInfo(unsigned int index)
+{
+	return &boneInfo[index];
+}
+
 bool BoneMesh::LoadMesh(const std::string& Filename)
 {
 	Clear();
@@ -324,34 +347,26 @@ void BoneMesh::ReadNodeHeirarchy(float AnimationTime, const aiNode* pNode, const
     if (pNodeAnim) 
 	{
 		aiVector3D Scaling;
-		CalcInterpolatedScaling(Scaling, AnimationTime, pNodeAnim);
-		//glm::mat4 ScalingM = glm::mat4(1.0);
-		//ScalingM = glm::scale(Scaling.x, Scaling.y, Scaling.z);
-		aiMatrix4x4 sM;
-		aiMatrix4x4::Scaling(Scaling, sM);
-		
-		aiQuaternion RotationQ;
-		CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);        
-		//glm::mat4 RotationM = AiMatrixToGlmMatrix(RotationQ.GetMatrix());
-		aiMatrix4x4 rM = aiMatrix4x4(RotationQ.GetMatrix());
-		
 		aiVector3D Translation;
-		CalcInterpolatedPosition(Translation, AnimationTime, pNodeAnim);
-		//glm::mat4 TranslationM = glm::mat4(1.0);
-//		TranslationM = glm::translate(Translation.x, Translation.y, Translation.z);
-		aiMatrix4x4 tM;
-		aiMatrix4x4::Translation(Translation, tM);
+		aiQuaternion RotationQ;
+		aiMatrix4x4 ScaleMatrix, RotationMatrix, TranslationMatrix;
 
-		NodeTransformation = tM * rM * sM;
+		CalcInterpolatedScaling(Scaling, AnimationTime, pNodeAnim);
+		CalcInterpolatedRotation(RotationQ, AnimationTime, pNodeAnim);
+		CalcInterpolatedPosition(Translation, AnimationTime, pNodeAnim);
+
+		aiMatrix4x4::Scaling(Scaling, ScaleMatrix);
+		RotationMatrix = aiMatrix4x4(RotationQ.GetMatrix());
+		aiMatrix4x4::Translation(Translation, TranslationMatrix);
+
+		NodeTransformation = TranslationMatrix * RotationMatrix * ScaleMatrix;
     }
-       
-    aiMatrix4x4 GlobalTransformation = ParentTransform * NodeTransformation;
-    if (boneMapping.find(NodeName) != boneMapping.end()) 
-	{
-        unsigned int BoneIndex = boneMapping[NodeName];
-		boneInfo[BoneIndex].FinalTransformation = (globalInverseTransform * GlobalTransformation * boneInfo[BoneIndex].BoneOffset);    
-	}
-    
+     
+    unsigned int BoneIndex = boneMapping[NodeName];
+	BoneInfo* info = &boneInfo[BoneIndex];
+	aiMatrix4x4 GlobalTransformation = ParentTransform * NodeTransformation * info->BoneControl;
+	info->FinalTransformation = (globalInverseTransform * GlobalTransformation * info->BoneOffset);    
+	  
     for (unsigned int i = 0 ; i < pNode->mNumChildren ; i++)
         ReadNodeHeirarchy(AnimationTime, pNode->mChildren[i], GlobalTransformation);
 }

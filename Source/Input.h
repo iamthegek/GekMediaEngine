@@ -1,5 +1,5 @@
-#ifndef __CONTROLLER__H
-#define __CONTROLLER__H
+#ifndef __MYINPUT__H
+#define __MYINPUT__H
 
 #include <vector>
 #include "glm\glm.hpp"
@@ -7,13 +7,12 @@
 const int MAX_BUTTONS_JOYSTICK = 30;
 const int MAX_AXES_JOYSTICK = 20;
 
-class JoystickController
+class JoystickTracker
 {
 public:
-	JoystickController(const int& id);
-	~JoystickController();
+	JoystickTracker();
+	~JoystickTracker();
 
-	int GetJoystickId() const;
 	float GetJoystickPosition(const int& axis) const;
 	bool IsButtonDown(const int& button) const;
 	bool IsButtonDownThisFrame(const int& button) const;
@@ -26,20 +25,19 @@ public:
 	void Update();
 
 private:
-	int joystickId;
 	float axes[MAX_AXES_JOYSTICK];
 	bool buttonsDown[MAX_BUTTONS_JOYSTICK];
 	bool buttonsDownThisFrame[MAX_BUTTONS_JOYSTICK];
 	bool buttonsUpThisFrame[MAX_BUTTONS_JOYSTICK];
 };
 
-const int MAX_KEYS = 50;
+const int MAX_KEYS = 70;
 
-class PcController
+class KeyboardMouseTracker
 {
 public:
-	PcController();
-	~PcController();
+	KeyboardMouseTracker();
+	~KeyboardMouseTracker();
 
 	bool IsKeyDown(const int& button) const;
 	bool IsKeyDownThisFrame(const int& button) const;

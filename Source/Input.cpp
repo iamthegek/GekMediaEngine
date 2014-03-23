@@ -1,9 +1,8 @@
-#include "Controller.h"
+#include "Input.h"
 #include "SFML\Window.hpp"
 
-JoystickController::JoystickController(const int& id)
+JoystickTracker::JoystickTracker()
 {
-	joystickId = id;
 	for(int i = 0; i < MAX_BUTTONS_JOYSTICK; i++)
 	{
 		buttonsDown[i] = buttonsDownThisFrame[i] = buttonsUpThisFrame[i] = false;
@@ -13,47 +12,48 @@ JoystickController::JoystickController(const int& id)
 		axes[i] = 0.0f;
 	}
 }
-JoystickController::~JoystickController()
+JoystickTracker::~JoystickTracker()
 {
 }
 
-int JoystickController::GetJoystickId() const
-{
-	return joystickId;
-}
-float JoystickController::GetJoystickPosition(const int& axis) const
+float JoystickTracker::GetJoystickPosition(const int& axis) const
 {
 	return axes[axis];
 }
-bool JoystickController::IsButtonDown(const int& button) const
+
+bool JoystickTracker::IsButtonDown(const int& button) const
 {
 	return buttonsDown[button];
 }
-bool JoystickController::IsButtonDownThisFrame(const int& button) const
+
+bool JoystickTracker::IsButtonDownThisFrame(const int& button) const
 {
 	return buttonsDownThisFrame[button];
 }
-bool JoystickController::IsButtonUpThisFrame(const int& button) const
+
+bool JoystickTracker::IsButtonUpThisFrame(const int& button) const
 {
 	return buttonsUpThisFrame[button];
 }
 
-void JoystickController::PressButton(const int& button)
+void JoystickTracker::PressButton(const int& button)
 {
 	buttonsDown[button] = true;
 	buttonsDownThisFrame[button] = true;
 }
-void JoystickController::ReleaseButton(const int& button)
+
+void JoystickTracker::ReleaseButton(const int& button)
 {
 	buttonsDown[button] = false;
 	buttonsUpThisFrame[button] = true;
 }
-void JoystickController::PlaceAxis(const float& pos, const int& axis)
+
+void JoystickTracker::PlaceAxis(const float& pos, const int& axis)
 {
 	axes[axis] = pos;
 }
 
-void JoystickController::Update()
+void JoystickTracker::Update()
 {
 	for(int i = 0; i < MAX_BUTTONS_JOYSTICK; i++)
 	{
@@ -61,7 +61,7 @@ void JoystickController::Update()
 	}
 }
 
-PcController::PcController()
+KeyboardMouseTracker::KeyboardMouseTracker()
 {
 	for(int i = 0; i < MAX_KEYS; i++)
 	{
@@ -69,33 +69,36 @@ PcController::PcController()
 	}
 	mouseLeftDown = mouseRightDown = mouseLeftDownThisFrame = mouseLeftUpThisFrame = mouseRightDownThisFrame = mouseRightUpThisFrame = false;
 }
-PcController::~PcController()
+
+KeyboardMouseTracker::~KeyboardMouseTracker()
 {
 }
 
-bool PcController::IsKeyDown(const int& button) const
+bool KeyboardMouseTracker::IsKeyDown(const int& button) const
 {
 	return keysDown[button];
 }
-bool PcController::IsKeyDownThisFrame(const int& button) const
+
+bool KeyboardMouseTracker::IsKeyDownThisFrame(const int& button) const
 {
 	return keysDownThisFrame[button];
 }
-bool PcController::IsKeyUpThisFrame(const int& button) const
+
+bool KeyboardMouseTracker::IsKeyUpThisFrame(const int& button) const
 {
 	return keysUpThisFrame[button];
 }
-void PcController::PressKey(const int& key)
+void KeyboardMouseTracker::PressKey(const int& key)
 {
 	keysDown[key] = true;
 	keysDownThisFrame[key] = true;
 }
-void PcController::ReleaseKey(const int& key)
+void KeyboardMouseTracker::ReleaseKey(const int& key)
 {
 	keysDown[key] = false;
 	keysUpThisFrame[key] = true;
 }
-void PcController::PressMouse(const int& button)
+void KeyboardMouseTracker::PressMouse(const int& button)
 {
 	if(button == sf::Mouse::Button::Left)
 	{
@@ -106,7 +109,7 @@ void PcController::PressMouse(const int& button)
 	mouseRightDown = true;
 	mouseRightDownThisFrame = true;
 }
-void PcController::ReleaseMouse(const int& button)
+void KeyboardMouseTracker::ReleaseMouse(const int& button)
 {
 	if(button == sf::Mouse::Button::Left)
 	{
@@ -117,14 +120,14 @@ void PcController::ReleaseMouse(const int& button)
 	mouseRightDown = false;
 	mouseRightUpThisFrame = true;
 }
-void PcController::MouseMove(const int& x, const int& y)
+void KeyboardMouseTracker::MouseMove(const int& x, const int& y)
 {
 	mousePositionOld = mousePosition;
 	mousePosition.x = x;
 	mousePosition.y = y;
 }
 
-void PcController::Update()
+void KeyboardMouseTracker::Update()
 {
 	for(int i = 0; i < MAX_KEYS; i++)
 	{

@@ -82,11 +82,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\DeferredRenderer.h" />
     <ClInclude Include="Source\GBuffer.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightMesh.h" />
+    <ClInclude Include="Source\LocalGame.h" />
+    <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\PlayerController.h" />
+    <ClInclude Include="Source\PlayerJoystickController.h" />
+    <ClInclude Include="Source\PlayerPcController.h" />
     <ClInclude Include="Source\Matrices.h" />
     <ClInclude Include="Source\MeshCommon.h" />
     <ClInclude Include="Source\Particle.h" />
@@ -100,14 +105,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\BoneMesh.cpp" />
-    <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\DeferredRenderer.cpp" />
     <ClCompile Include="Source\GBuffer.cpp" />
     <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\LightMesh.cpp" />
+    <ClCompile Include="Source\LocalGame.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Matrices.cpp" />
     <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\PlayerJoystickController.cpp" />
+    <ClCompile Include="Source\PlayerPcController.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\ShadowBuffer.cpp" />
     <ClCompile Include="Source\ShadowMap.cpp" />

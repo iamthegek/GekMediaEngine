@@ -28,6 +28,12 @@
     <Filter Include="Source Files\Shaders\Fragment">
       <UniqueIdentifier>{8fb08690-077f-4cf2-9c6a-a9c60cf87cae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Player">
+      <UniqueIdentifier>{d981d210-77eb-45f3-8397-a72c8537105b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Player">
+      <UniqueIdentifier>{35801d71-4709-40b8-bbbe-f7b2647cfadb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GBuffer.h">
@@ -66,14 +72,29 @@
     <ClInclude Include="Source\MeshCommon.h">
       <Filter>Header Files\DeferredRenderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Controller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Source\ShadowBuffer.h">
       <Filter>Header Files\DeferredRenderer</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShadowMap.h">
       <Filter>Header Files\DeferredRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\LocalGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerController.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerJoystickController.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlayerPcController.h">
+      <Filter>Header Files\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Header Files\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -110,14 +131,26 @@
     <ClCompile Include="Source\BoneMesh.cpp">
       <Filter>Source Files\DeferredRenderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Controller.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ShadowBuffer.cpp">
       <Filter>Source Files\DeferredRenderer</Filter>
     </ClCompile>
     <ClCompile Include="Source\ShadowMap.cpp">
       <Filter>Source Files\DeferredRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\LocalGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerJoystickController.cpp">
+      <Filter>Source Files\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlayerPcController.cpp">
+      <Filter>Source Files\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

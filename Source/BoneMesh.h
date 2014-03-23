@@ -18,30 +18,40 @@
 #include "MeshCommon.h"
 #include "Texture.h"
 
+extern glm::mat4 AiMatrixToGlmMatrix(const aiMatrix4x4& m);
+extern aiMatrix4x4 GlmMatrixToAiMatrix(const glm::mat4& m);
+
 class BoneMesh
 {
 public:
-	BoneMesh();
-	~BoneMesh();
-	bool LoadMesh(const std::string& Filename);
-	void AddColorTexture(const std::string& Filename);
-	void AddNormalTexture(const std::string& Filename);
-	void Render();
-	unsigned int GetNumBones() const;
-	void InterpolateBones(float TimeInSeconds, std::vector<glm::mat4>& Transforms);
-	
-	Texture * textures[2];
-
-private:
 	struct BoneInfo 
 	{
+		aiMatrix4x4 BoneControl;
 	    aiMatrix4x4 BoneOffset;
 	    aiMatrix4x4 FinalTransformation; 
 	    BoneInfo() 
 		{      
 	    }
 	};
+
+	BoneMesh();
+	~BoneMesh();
 	
+	bool LoadMesh(const std::string& Filename);
+	void AddColorTexture(const std::string& Filename);
+	void AddNormalTexture(const std::string& Filename);
+	
+	unsigned int GetNumBones() const;
+	unsigned int GetBoneIndex(std::string BoneName);
+	BoneInfo* GetBoneInfo(unsigned int index);
+	glm::mat4 GetBoneMatrix(unsigned int index);
+	void InterpolateBones(float TimeInSeconds, std::vector<glm::mat4>& Transforms);
+
+	void Render();
+	
+	Texture * textures[2];
+
+private:
 	struct VertexBoneData 
 	{        
 	    unsigned int IDs[NUM_BONES_PER_VEREX];
