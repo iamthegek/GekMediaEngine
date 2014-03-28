@@ -80,3 +80,35 @@ unsigned int Shader::GetProgram()
 {
 	return program;
 }
+void Shader::Locate(const char* n)
+{
+	uniformLocations.push_back(glGetUniformLocation(program, n));
+}
+unsigned int Shader::GetLocation(const unsigned int& index)
+{
+	return uniformLocations[index];
+}
+void Shader::Send(const unsigned int& i, const int& var)
+{
+	glUniform1i(uniformLocations[i], var);
+}
+void Shader::Send(const unsigned int& i, const float& var)
+{
+	glUniform1f(uniformLocations[i], var);
+}
+void Shader::Send(const unsigned int& i, const glm::vec2& var)
+{
+	glUniform2f(uniformLocations[i], var.x, var.y);
+}
+void Shader::Send(const unsigned int& i, const glm::vec3& var)
+{
+	glUniform3f(uniformLocations[i], var.x, var.y, var.z);
+}
+void Shader::Send(const unsigned int& i, const glm::mat4& var)
+{
+	glUniformMatrix4fv(uniformLocations[i], 1, GL_FALSE, &var[0][0]);
+}
+void Shader::Send(const unsigned int& i, std::vector<glm::mat4>& var)
+{
+	glUniformMatrix4fv(uniformLocations[i], var.size(), GL_FALSE, &var[0][0][0]);
+}

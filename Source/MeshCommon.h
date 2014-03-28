@@ -24,6 +24,6 @@ const int NUM_BONE_MESH_VBs = 6;
 #define BONE_WEIGHT_LOCATION 5
 
 #define NUM_BONES_PER_VEREX  4
-const int MAX_BONES = 100;
+const int MAX_BONES = 64;
 
 #endif

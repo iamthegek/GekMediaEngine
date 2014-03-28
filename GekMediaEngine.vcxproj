@@ -82,38 +82,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AnimatedModel.h" />
+    <ClInclude Include="Source\BaseModel.h" />
     <ClInclude Include="Source\Input.h" />
-    <ClInclude Include="Source\DeferredRenderer.h" />
+    <ClInclude Include="Source\DeferredBuffers.h" />
     <ClInclude Include="Source\GBuffer.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightMesh.h" />
     <ClInclude Include="Source\LocalGame.h" />
+    <ClInclude Include="Source\ModelContainer.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\PlayerController.h" />
     <ClInclude Include="Source\PlayerJoystickController.h" />
     <ClInclude Include="Source\PlayerPcController.h" />
-    <ClInclude Include="Source\Matrices.h" />
     <ClInclude Include="Source\MeshCommon.h" />
-    <ClInclude Include="Source\Particle.h" />
     <ClInclude Include="Source\ScreenQuadMesh.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\BoneMesh.h" />
     <ClInclude Include="Source\ShadowBuffer.h" />
     <ClInclude Include="Source\ShadowMap.h" />
     <ClInclude Include="Source\StaticMesh.h" />
+    <ClInclude Include="Source\StaticModel.h" />
     <ClInclude Include="Source\Texture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AnimatedModel.cpp" />
+    <ClCompile Include="Source\BaseModel.cpp" />
     <ClCompile Include="Source\BoneMesh.cpp" />
     <ClCompile Include="Source\Input.cpp" />
-    <ClCompile Include="Source\DeferredRenderer.cpp" />
+    <ClCompile Include="Source\DeferredBuffers.cpp" />
     <ClCompile Include="Source\GBuffer.cpp" />
-    <ClCompile Include="Source\Light.cpp" />
     <ClCompile Include="Source\LightMesh.cpp" />
     <ClCompile Include="Source\LocalGame.cpp" />
     <ClCompile Include="Source\main.cpp" />
-    <ClCompile Include="Source\Matrices.cpp" />
-    <ClCompile Include="Source\Particle.cpp" />
+    <ClCompile Include="Source\ModelContainer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\PlayerJoystickController.cpp" />
     <ClCompile Include="Source\PlayerPcController.cpp" />
@@ -121,25 +123,27 @@
     <ClCompile Include="Source\ShadowBuffer.cpp" />
     <ClCompile Include="Source\ShadowMap.cpp" />
     <ClCompile Include="Source\StaticMesh.cpp" />
+    <ClCompile Include="Source\StaticModel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Shaders\BoneMeshShader.frag" />
-    <None Include="Data\Shaders\BoneMeshShader.vert" />
-    <None Include="Data\Shaders\BoneMeshShadowShader.frag" />
-    <None Include="Data\Shaders\BoneMeshShadowShader.vert" />
+    <None Include="Data\Shaders\BoneMeshDiffuseAndNormal.vert" />
+    <None Include="Data\Shaders\GDiffuse.frag" />
+    <None Include="Data\Shaders\BoneMeshDiffuse.vert" />
+    <None Include="Data\Shaders\BoneMeshShadow.vert" />
     <None Include="Data\Shaders\CascadedShadowShader.frag" />
     <None Include="Data\Shaders\CascadedShadowShader.vert" />
     <None Include="Data\Shaders\DirectionalLightShader.frag" />
     <None Include="Data\Shaders\DirectionalLightShader.vert" />
-    <None Include="Data\Shaders\ParticleShader.frag" />
-    <None Include="Data\Shaders\ParticleShader.vert" />
     <None Include="Data\Shaders\PointLightShader.frag" />
     <None Include="Data\Shaders\PointLightShader.vert" />
-    <None Include="Data\Shaders\StaticMeshShader.frag" />
-    <None Include="Data\Shaders\StaticMeshShader.vert" />
-    <None Include="Data\Shaders\StaticMeshShadowShader.frag" />
-    <None Include="Data\Shaders\StaticMeshShadowShader.vert" />
+    <None Include="Data\Shaders\SkyboxShader.frag" />
+    <None Include="Data\Shaders\SkyboxShader.vert" />
+    <None Include="Data\Shaders\GDiffuseAndNormal.frag" />
+    <None Include="Data\Shaders\StaticMeshDiffuse.vert" />
+    <None Include="Data\Shaders\StaticMeshDiffuseAndNormal.vert" />
+    <None Include="Data\Shaders\MeshShadow.frag" />
+    <None Include="Data\Shaders\StaticMeshShadow.vert" />
     <None Include="Data\Shaders\StencilShader.frag" />
     <None Include="Data\Shaders\StencilShader.vert" />
   </ItemGroup>

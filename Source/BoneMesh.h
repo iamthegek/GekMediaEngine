@@ -29,17 +29,13 @@ public:
 		aiMatrix4x4 BoneControl;
 	    aiMatrix4x4 BoneOffset;
 	    aiMatrix4x4 FinalTransformation; 
-	    BoneInfo() 
-		{      
-	    }
+	    BoneInfo() 	{ }
 	};
 
 	BoneMesh();
 	~BoneMesh();
 	
 	bool LoadMesh(const std::string& Filename);
-	void AddColorTexture(const std::string& Filename);
-	void AddNormalTexture(const std::string& Filename);
 	
 	unsigned int GetNumBones() const;
 	unsigned int GetBoneIndex(std::string BoneName);
@@ -48,8 +44,6 @@ public:
 	void InterpolateBones(float TimeInSeconds, std::vector<glm::mat4>& Transforms);
 
 	void Render();
-	
-	Texture * textures[2];
 
 private:
 	struct VertexBoneData 

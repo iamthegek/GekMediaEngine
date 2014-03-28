@@ -43,6 +43,8 @@ vec4 CalcPointLight(vec3 WorldPos, vec3 Normal, vec3 BaseColor)
 
 	vec3 l = (LightPosition - WorldPos) / LightRadius;
     float Attenuation = 1.0 - dot(l,l);
+	if(Attenuation < 0.0)
+		Attenuation = 0.0;
     return LightValue * Attenuation;
 }
 

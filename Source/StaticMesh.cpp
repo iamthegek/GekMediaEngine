@@ -7,7 +7,6 @@ StaticMesh::StaticMesh()
 {
     VAO = 0;
 	ZERO_MEM(buffers);
-	textures[0] = textures[1] = 0;
 }
 StaticMesh::~StaticMesh(){ Clear();}
 void StaticMesh::Clear()
@@ -17,8 +16,6 @@ void StaticMesh::Clear()
 	if (VAO != 0)			
 		glDeleteVertexArrays(1, &VAO);
 	VAO = 0;
-	SAFE_DELETE(textures[0]);
-	SAFE_DELETE(textures[1]);
 }
 bool StaticMesh::LoadMesh(const string& Filename)
 {
@@ -33,18 +30,6 @@ bool StaticMesh::LoadMesh(const string& Filename)
     else		printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
     glBindVertexArray(0);	
     return Ret;
-}
-void StaticMesh::AddColorTexture(const std::string& Filename)
-{
-	if(textures[0] != 0)
-		delete textures[0];
-	textures[0] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_COLOR);
-}
-void StaticMesh::AddNormalTexture(const std::string& Filename)
-{
-	if(textures[1] != 0)
-		delete textures[1];
-	textures[1] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_NORMAL);
 }
 bool StaticMesh::InitFromScene(const aiScene* pScene, const string& Filename)
 {  

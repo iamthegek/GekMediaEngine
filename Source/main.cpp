@@ -9,7 +9,8 @@
 #include <SFML\Audio.hpp>		
 
 #include "Input.h"
-#include "DeferredRenderer.h"
+#include "DeferredBuffers.h"
+#include "ModelContainer.h"
 #include "LocalGame.h"
 
 enum WindowResolutions
@@ -32,18 +33,20 @@ GLfloat			fieldOfView = 90.0f;
 GLuint			frameLimit = 60;
 GLfloat			deltaTime = 1.0f / (float)frameLimit;
 const GLchar*	windowTitle = "GME v0.0.1";
-const GLfloat	nearDistance = 1.0f;
+const GLfloat	nearDistance = 0.5f;
 const GLfloat	farDistance = 500.0f;
 sf::Window		myWindow;
 
 //Game Variables
 LocalGame* localGame = 0;
-DeferredRenderer* myRenderer;
+DeferredBuffers* renderBuffers;
+ModelContainer* modelContainer;
 glm::vec3 myCamPos; 
 glm::vec3 myCamTarget = glm::vec3(0,0,1); 
 glm::vec3 myCamUp = glm::vec3(0,1,0);
 
-BoneMesh* tmp = 0;
+AnimatedModel* tmp = 0;
+StaticModel* land = 0;
 
 //CORE
 bool Initialize();
@@ -57,20 +60,6 @@ void Resize(const int& resolution);
 void SetFrameLimit(const int& framelim);
 void SetVsync(bool flag);
 void SetFOV(const float& fov);
-
-//AUDIO
-std::vector<sf::SoundBuffer> mySoundBuffers; //Preloaded Sound Files to be attached to sf::Sound
-sf::Music myMusic;							 //Only 1 instance of music is necessary
-GLfloat musicVolume = 100.0f;
-GLfloat soundVolume = 100.0f;
-GLfloat masterVolume = 100.0f;
-bool SetMusic(const std::string& m);
-void PlayMusic();
-void PauseMusic();
-void StopMusic();
-void SetMusicVolume(const GLfloat& v);		//0-100
-void SetSoundVolume(const GLfloat& v);		//0-100
-void SetMasterVolume(const GLfloat& f);		//0-100
 
 int main()
 {
@@ -124,24 +113,43 @@ bool Initialize()
 	std::cout << "Max Color Attachments: "	<< maxColorAttachments		<< "\n";
 	std::cout << "Max Framebuffers: "		<< maxFbos					<< "\n\n";
 
-	myRenderer = new DeferredRenderer();
-	myRenderer->Build(1280,720,fieldOfView,nearDistance,farDistance);
-	myRenderer->SetGlobalLightDirection(glm::vec3(-1,-1,0));
-	myRenderer->NewPointLight(glm::vec3(1,0,0),glm::vec3(-5,4,2),10.0f);
-	tmp = myRenderer->NewBoneMesh("Data/BoneMeshes/boblampclean.md5mesh");
-	//tmp->AddColorTexture("Data/ModelTextures/Color.png");
+	renderBuffers = new DeferredBuffers();
+	renderBuffers->Build(1280,720,fieldOfView,nearDistance,farDistance);
+	renderBuffers->SetGlobalLightDirection(glm::vec3(-1,-1,0));
+	renderBuffers->SetGlobalLightColor(glm::vec3(0.9f));
+	renderBuffers->NewPointLight(glm::vec3(1,0,0),glm::vec3(-5,4,2),10.0f);
+
+	modelContainer = new ModelContainer();
+
+	tmp = new AnimatedModel();
+	BoneMesh * m = new BoneMesh();
+	m->LoadMesh("Data/BoneMeshes/boblampclean.md5mesh");
+	tmp->SetMesh(m);
+	tmp->AddColorTexture("Data/ModelTextures/Normal.png");
 	tmp->AddNormalTexture("Data/ModelTextures/Normal.png");
+	tmp->AddAnimation(0.0f, 2.0f, "default", true);
+	tmp->SetAnimation("default");
+	modelContainer->AddAnimatedModel(tmp);
+
+	land = new StaticModel();
+	StaticMesh * s = new StaticMesh();
+	s->LoadMesh("Data/StaticMeshes/Land01.obj");
+	land->AddLevelOfDetail(s, 0.0f);
+	land->AddColorTexture("Data/ModelTextures/Grass.png");
+	land->AddNormalTexture("Data/ModelTextures/GrassNormal.png");
+//	land->SetStatus(STATUS_SHADING, SHADING_DIFFUSE);
+	modelContainer->AddStaticModel(land);
 
 	localGame = new LocalGame();
 	localGame->EnablePlayer(0, ControllerIds::C_JOYSTICK0);
-	localGame->GetPlayer(0)->AttachBoneMesh(tmp);
+	localGame->GetPlayer(0)->AttachBoneMesh(tmp->GetMesh());
 
 	return true;
 }
 void Update()
 {
 	localGame->Update(deltaTime);
-	myRenderer->Update(deltaTime);
+	modelContainer->Update(deltaTime);
 
 }
 float t = 0.0f;
@@ -151,57 +159,38 @@ void Draw()
 {
 	t+= deltaTime;
 	glm::mat4 anim = glm::mat4(1.0);
+	glm::vec2 f = (localGame->GetController(0)->GetFaceDirection());
+	float targetX = f.y * 60.0f;
+	float targetY = f.x * 60.0f;
+	angleX += (targetX-angleX) * (deltaTime*10.0f);
+	angleY += (targetY-angleY) * (deltaTime*10.0f);
+
+	glm::mat4 m;
+	m = glm::rotate(angleX, glm::vec3(0,0,11));
+	m *= glm::rotate(angleY, glm::vec3(0,1,0));
+	tmp->GetMesh()->GetBoneInfo(tmp->GetMesh()->GetBoneIndex("neck"))->BoneControl = GlmMatrixToAiMatrix(m);
 	glm::vec2 d = localGame->GetPlayer(0)->GetPosition();
 	anim*= glm::translate(d.x, 0.0f, d.y);
 	anim*= glm::scale(glm::vec3(.1,.1,.1));
 	anim*= glm::rotate(90.0f, glm::vec3(1,0,0));
+	tmp->GetMatrix() = anim;
 
 	UpdateCamera();
-
-	//DRAW CASCADED SHADOWS
-	if(myRenderer->DoCloseShadows())
-	{
-		myRenderer->DrawToShadowBuffer(tmp, t, anim);
-	}
-	if(myRenderer->DoMediumShadows())
-	{
-	}
-	if(myRenderer->DoFarShadows())
-	{
-	}
-
-	//ENABLE GBUFFER
-	myRenderer->SetUpGBuffer();
-	{
-		glm::vec2 f = (localGame->GetController(0)->GetFaceDirection());
-		float targetX = f.y * 60.0f;
-		angleX += (targetX-angleX) * (deltaTime*10.0f);
-		float targetY = f.x * 60.0f;
-		angleY += (targetY-angleY) * (deltaTime*10.0f);
-
-		glm::mat4 m;
-		m = glm::rotate(angleX, glm::vec3(0,0,11));
-		m *= glm::rotate(angleY, glm::vec3(0,1,0));
-
-		tmp->GetBoneInfo(tmp->GetBoneIndex("neck"))->BoneControl = GlmMatrixToAiMatrix(m);
-		myRenderer->DrawToGBuffer(tmp, t, anim);
-	}
-	//RENDER TO SCREEN
-	myRenderer->RenderToScreen();
+	modelContainer->Render(renderBuffers, deltaTime);
 }
 void DeInitialize()
 {
-	myMusic.stop();
 	delete localGame;
-	delete myRenderer;
+	delete modelContainer;
+	delete renderBuffers;
 }
 
 void UpdateCamera()
 {
 	myCamUp = glm::vec3(0,1,0);
-	myCamPos = glm::vec3(0,4,5);
+	myCamPos = glm::vec3(0,4,8);
 	myCamTarget = glm::vec3(0,3,0);
-	myRenderer->LookAt(myCamPos, myCamTarget, myCamUp);
+	renderBuffers->LookAt(myCamPos, myCamTarget, myCamUp);
 }
 
 void Resize(const int& resolution)
@@ -210,23 +199,23 @@ void Resize(const int& resolution)
 	{
 	case WindowResolutions::R_1920x1080:
 		myWindow.setSize(sf::Vector2u(1920,1080));
-		myRenderer->Build(1920,1080,fieldOfView,nearDistance,farDistance);
+		renderBuffers->Build(1920,1080,fieldOfView,nearDistance,farDistance);
 		break;
 	case WindowResolutions::R_1440x960:
 		myWindow.setSize(sf::Vector2u(1440,960));
-		myRenderer->Build(1440,960,fieldOfView,nearDistance,farDistance);
+		renderBuffers->Build(1440,960,fieldOfView,nearDistance,farDistance);
 		break;
 	case WindowResolutions::R_1280x720:
 		myWindow.setSize(sf::Vector2u(1280,720));
-		myRenderer->Build(1280,720,fieldOfView,nearDistance,farDistance);
+		renderBuffers->Build(1280,720,fieldOfView,nearDistance,farDistance);
 		break;
 	case WindowResolutions::R_800x600:
 		myWindow.setSize(sf::Vector2u(800,600));
-		myRenderer->Build(800,600,fieldOfView,nearDistance,farDistance);
+		renderBuffers->Build(800,600,fieldOfView,nearDistance,farDistance);
 		break;
 	case WindowResolutions::R_640x480:
 		myWindow.setSize(sf::Vector2u(640,480));
-		myRenderer->Build(640,480,fieldOfView,nearDistance,farDistance);
+		renderBuffers->Build(640,480,fieldOfView,nearDistance,farDistance);
 		break;
 	}
 }
@@ -249,39 +238,5 @@ void SetVsync(bool flag)
 void SetFOV(const float& fov)
 {
 	fieldOfView = fov;
-	myRenderer->SetFieldOfView(fov);
-}
-
-bool SetMusic(const std::string& m)
-{
-	if(!myMusic.openFromFile(m))
-		return false;
-	myMusic.setLoop(true);
-	return true;
-}
-void PlayMusic()
-{
-	myMusic.play();
-}
-void PauseMusic()
-{
-	myMusic.pause();
-}
-void StopMusic()
-{
-	myMusic.stop();
-}
-void SetMusicVolume(const GLfloat& v)
-{
-	musicVolume = v;
-	myMusic.setVolume((float)musicVolume);
-}
-void SetSoundVolume(const GLfloat& v)
-{
-	soundVolume = v;
-}
-void SetMasterVolume(const GLfloat& f)
-{
-	masterVolume = f;
-	sf::Listener::setGlobalVolume(f);
+	renderBuffers->SetFieldOfView(fov);
 }

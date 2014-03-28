@@ -18,11 +18,7 @@ public:
     StaticMesh();
     ~StaticMesh();
     bool LoadMesh(const std::string& Filename);
-	void AddColorTexture(const std::string& Filename);
-	void AddNormalTexture(const std::string& Filename);
     void Render();
-
-	Texture * textures[2];
 
 private:
     bool InitFromScene(const aiScene* pScene, const std::string& Filename);

@@ -47,10 +47,8 @@ void main()
 				{
 					float lightDepth = texture2D(ShadowMap0,lightWorld.xy+vec2(offset.x * x,offset.y * y)).x;
 					if (zLight >lightDepth)
-						shadowTerm-=0.10;
+						shadowTerm-=0.06;
 				}
-			Color = vec4(shadowTerm,shadowTerm,shadowTerm,1);
-			return;
 		}
 		else if (depth<0.985) //map 1
 		{
@@ -66,10 +64,8 @@ void main()
 				{
 					float lightDepth = texture2D(ShadowMap1, lightWorld.xy+vec2(offset.x * x,offset.y * y)).x;
 					if (zLight >lightDepth)
-						shadowTerm-=0.10;
+						shadowTerm-=0.06;
 				}
-			Color = vec4(shadowTerm,shadowTerm,shadowTerm,1);
-			return;
 		}
 		else //map 2
 		{
@@ -85,10 +81,9 @@ void main()
 				{
 					float lightDepth = texture2D(ShadowMap2,lightWorld.xy+vec2(offset.x * x,offset.y * y)).x;
 					if (zLight >lightDepth)
-						shadowTerm-=0.10;
+						shadowTerm-=0.06;
 				}
-			Color = vec4(shadowTerm,shadowTerm,shadowTerm,1);
-			return;
 		}
+		Color = vec4(shadowTerm,shadowTerm,shadowTerm,1);
 	}
 }

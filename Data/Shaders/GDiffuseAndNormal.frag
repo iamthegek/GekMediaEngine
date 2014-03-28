@@ -1,6 +1,6 @@
 #version 400
 
-uniform sampler2D ColorMap;
+uniform sampler2D DiffuseMap;
 uniform sampler2D NormalMap;
 
 in vec2 TexCoord0;
@@ -14,7 +14,7 @@ layout (location = 2) out vec4 Normal;
 void main()
 {
     Position =  vec4(WorldPosition0,1.0);
-	Color = vec4(1.0);//texture2D(ColorMap, TexCoord0).rgb, 1.0);
+	Color = vec4(texture2D(DiffuseMap, TexCoord0).rgb, 1.0);
 	vec3 n = Tbn0 * normalize(texture2D(NormalMap, TexCoord0).rgb * 2.0 - 1.0);
 	Normal = vec4((n+1.0)*0.5, 1.0);
 }

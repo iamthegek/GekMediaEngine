@@ -79,7 +79,9 @@ void GBuffer::BindForGeomPass()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	glDrawBuffer(GL_COLOR_ATTACHMENT4);
+	glClearColor(0.1f,0.1f,0.1f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
+	glClearColor(0,0,0,1);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };

@@ -7,7 +7,7 @@ layout (location = 5) in vec4 BoneWeights;
 uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 LightMvpMatrix;
-uniform mat4 gBones[100];
+uniform mat4 gBones[64];
 
 void main()
 {

@@ -49,7 +49,6 @@ BoneMesh::BoneMesh()
     ZERO_MEM(m_Buffers);
     numBones = 0;
     assimpScene = NULL;
-	textures[0] = textures[1] = 0;
 }
 BoneMesh::~BoneMesh()
 {
@@ -62,21 +61,6 @@ void BoneMesh::Clear()
     if (m_VAO != 0) 
 		glDeleteVertexArrays(1, &m_VAO);
     m_VAO = 0;
-
-	SAFE_DELETE(textures[0]);
-	SAFE_DELETE(textures[1]);
-}
-void BoneMesh::AddColorTexture(const std::string& Filename)
-{
-	if(textures[0] != 0)
-		delete textures[0];
-	textures[0] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_COLOR);
-}
-void BoneMesh::AddNormalTexture(const std::string& Filename)
-{
-	if(textures[1] != 0)
-		delete textures[1];
-	textures[1] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_NORMAL);
 }
 
 unsigned int BoneMesh::GetNumBones() const 
