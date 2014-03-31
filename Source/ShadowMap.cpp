@@ -37,6 +37,7 @@ void CascadedShadowMap::SetUp(const int& resolution)
 
 void CascadedShadowMap::Start(const int& index)
 {
+	lightMatrix[index] = lightProjectionMatrix[index] * lightViewMatrix[index] * camInv;
 	buf[index].Start();
 }
 
@@ -74,26 +75,21 @@ void CascadedShadowMap::UpdateMatrices(	const glm::mat4& cView,
 										const glm::vec3& cDir,
 										const glm::vec3& cPos)
 {
-	glm::mat4 camInv = glm::inverse(cView);
+	camInv = glm::inverse(cView);
 	glm::vec3 camDirection  = glm::normalize(glm::vec3(cDir.x, 0.0f, cDir.z));
 
 	//Shadow 0
-	glm::vec3 eye = lightDirection * -500.0f + cPos - camDirection * 35.0f;
-	glm::vec3 lookAt = cPos - camDirection * 35.0f;
+	glm::vec3 eye = lightDirection * -500.0f + cPos - camDirection * 30.0f;
+	glm::vec3 lookAt = cPos - camDirection * 30.0f;
 	lightViewMatrix[0] = glm::lookAt(eye, lookAt, glm::vec3(0,1,0));
 
 	//Shadow 1
-	eye = lightDirection * -500.0f + cPos - camDirection * 200.0f;
-	lookAt = cPos - camDirection * 200.0f;
+	eye = lightDirection * -500.0f + cPos - camDirection * 150.0f;
+	lookAt = cPos - camDirection * 150.0f;
 	lightViewMatrix[1] = glm::lookAt(eye, lookAt, glm::vec3(0,1,0));
 
 	//Shadow 2
-	eye = lightDirection * -2000.0f + cPos - camDirection * 1000.0f;
-	lookAt = cPos - camDirection * 1000.0f;
+	eye = lightDirection * -2000.0f + cPos - camDirection * 900.0f;
+	lookAt = cPos - camDirection * 900.0f;
 	lightViewMatrix[2] = glm::lookAt(eye, lookAt, glm::vec3(0,1,0));
-
-	//Shadow Matrices
-	lightMatrix[0] = lightProjectionMatrix[0] * lightViewMatrix[0] * camInv; //ORDER COULD BE WRONG
-	lightMatrix[1] = lightProjectionMatrix[1] * lightViewMatrix[1] * camInv; //ORDER COULD BE WRONG
-	lightMatrix[2] = lightProjectionMatrix[2] * lightViewMatrix[2] * camInv; //ORDER COULD BE WRONG
 }

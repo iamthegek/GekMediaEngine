@@ -8,7 +8,6 @@
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>		
 
-#include "Input.h"
 #include "DeferredBuffers.h"
 #include "ModelContainer.h"
 #include "LocalGame.h"
@@ -29,12 +28,12 @@ enum FrameLimits
 };
 
 //Window Variables
-GLfloat			fieldOfView = 90.0f;
+GLfloat			fieldOfView = 75.0f;
 GLuint			frameLimit = 60;
 GLfloat			deltaTime = 1.0f / (float)frameLimit;
 const GLchar*	windowTitle = "GME v0.0.1";
 const GLfloat	nearDistance = 0.5f;
-const GLfloat	farDistance = 500.0f;
+const GLfloat	farDistance = 800.0f;
 sf::Window		myWindow;
 
 //Game Variables
@@ -45,8 +44,8 @@ glm::vec3 myCamPos;
 glm::vec3 myCamTarget = glm::vec3(0,0,1); 
 glm::vec3 myCamUp = glm::vec3(0,1,0);
 
-AnimatedModel* tmp = 0;
 StaticModel* land = 0;
+PointLight* lght = 0;
 
 //CORE
 bool Initialize();
@@ -58,7 +57,7 @@ void DeInitialize();
 void UpdateCamera();
 void Resize(const int& resolution);
 void SetFrameLimit(const int& framelim);
-void SetVsync(bool flag);
+
 void SetFOV(const float& fov);
 
 int main()
@@ -77,8 +76,6 @@ int main()
 			switch(evnt.type)
 			{
 				case sf::Event::Closed:					RUN = false; break;
-				case sf::Event::JoystickConnected:		break;
-				case sf::Event::JoystickDisconnected:	break;
 				case sf::Event::JoystickButtonPressed:	localGame->JoystickButtonPressed(evnt.joystickButton.button, evnt.joystickButton.joystickId); break;
 				case sf::Event::JoystickButtonReleased: localGame->JoystickButtonReleased(evnt.joystickButton.button, evnt.joystickButton.joystickId);	break;
 				case sf::Event::JoystickMoved:			localGame->JoystickMoved(evnt.joystickMove.axis, evnt.joystickMove.joystickId, evnt.joystickMove.position); break;
@@ -102,7 +99,7 @@ bool Initialize()
 {
 	myWindow.create(sf::VideoMode(1280,720), windowTitle, sf::Style::Close);
 	myWindow.setFramerateLimit(frameLimit);
-	myWindow.setVerticalSyncEnabled(true);
+	myWindow.setVerticalSyncEnabled(false);
 
 	glewInit();
 	GLint maxColorAttachments, maxFbos;
@@ -115,34 +112,23 @@ bool Initialize()
 
 	renderBuffers = new DeferredBuffers();
 	renderBuffers->Build(1280,720,fieldOfView,nearDistance,farDistance);
-	renderBuffers->SetGlobalLightDirection(glm::vec3(-1,-1,0));
+	renderBuffers->SetGlobalLightDirection(glm::vec3(-1,-1,-1));
 	renderBuffers->SetGlobalLightColor(glm::vec3(0.9f));
-	renderBuffers->NewPointLight(glm::vec3(1,0,0),glm::vec3(-5,4,2),10.0f);
+	lght = renderBuffers->NewPointLight(glm::vec3(1,1,0),glm::vec3(-5,4,2),10.0f);
 
 	modelContainer = new ModelContainer();
 
-	tmp = new AnimatedModel();
-	BoneMesh * m = new BoneMesh();
-	m->LoadMesh("Data/BoneMeshes/boblampclean.md5mesh");
-	tmp->SetMesh(m);
-	tmp->AddColorTexture("Data/ModelTextures/Normal.png");
-	tmp->AddNormalTexture("Data/ModelTextures/Normal.png");
-	tmp->AddAnimation(0.0f, 2.0f, "default", true);
-	tmp->SetAnimation("default");
-	modelContainer->AddAnimatedModel(tmp);
-
 	land = new StaticModel();
 	StaticMesh * s = new StaticMesh();
-	s->LoadMesh("Data/StaticMeshes/Land01.obj");
+	s->LoadMesh("Data/CollisionMeshes/test.obj");
 	land->AddLevelOfDetail(s, 0.0f);
 	land->AddColorTexture("Data/ModelTextures/Grass.png");
-	land->AddNormalTexture("Data/ModelTextures/GrassNormal.png");
-//	land->SetStatus(STATUS_SHADING, SHADING_DIFFUSE);
+//	land->AddNormalTexture("Data/ModelTextures/GrassNormal.png");
+	land->SetShading(MAPPED_DIFFUSE);
 	modelContainer->AddStaticModel(land);
 
 	localGame = new LocalGame();
-	localGame->EnablePlayer(0, ControllerIds::C_JOYSTICK0);
-	localGame->GetPlayer(0)->AttachBoneMesh(tmp->GetMesh());
+	localGame->GetPlayer()->LoadModel(modelContainer);
 
 	return true;
 }
@@ -152,29 +138,8 @@ void Update()
 	modelContainer->Update(deltaTime);
 
 }
-float t = 0.0f;
-float angleX = 0.0f;
-float angleY = 0.0f;
 void Draw()
 {
-	t+= deltaTime;
-	glm::mat4 anim = glm::mat4(1.0);
-	glm::vec2 f = (localGame->GetController(0)->GetFaceDirection());
-	float targetX = f.y * 60.0f;
-	float targetY = f.x * 60.0f;
-	angleX += (targetX-angleX) * (deltaTime*10.0f);
-	angleY += (targetY-angleY) * (deltaTime*10.0f);
-
-	glm::mat4 m;
-	m = glm::rotate(angleX, glm::vec3(0,0,11));
-	m *= glm::rotate(angleY, glm::vec3(0,1,0));
-	tmp->GetMesh()->GetBoneInfo(tmp->GetMesh()->GetBoneIndex("neck"))->BoneControl = GlmMatrixToAiMatrix(m);
-	glm::vec2 d = localGame->GetPlayer(0)->GetPosition();
-	anim*= glm::translate(d.x, 0.0f, d.y);
-	anim*= glm::scale(glm::vec3(.1,.1,.1));
-	anim*= glm::rotate(90.0f, glm::vec3(1,0,0));
-	tmp->GetMatrix() = anim;
-
 	UpdateCamera();
 	modelContainer->Render(renderBuffers, deltaTime);
 }
@@ -187,53 +152,43 @@ void DeInitialize()
 
 void UpdateCamera()
 {
-	myCamUp = glm::vec3(0,1,0);
-	myCamPos = glm::vec3(0,4,8);
-	myCamTarget = glm::vec3(0,3,0);
-	renderBuffers->LookAt(myCamPos, myCamTarget, myCamUp);
+	//renderBuffers->LookAt(myCamPos, myCamTarget, myCamUp);
+	renderBuffers->LookAt(localGame->GetPlayer()->GetCamPosition(), localGame->GetPlayer()->GetPosition(), glm::vec3(0,1,0));
 }
 
 void Resize(const int& resolution)
 {
 	switch(resolution)
 	{
-	case WindowResolutions::R_1920x1080:
-		myWindow.setSize(sf::Vector2u(1920,1080));
-		renderBuffers->Build(1920,1080,fieldOfView,nearDistance,farDistance);
-		break;
-	case WindowResolutions::R_1440x960:
-		myWindow.setSize(sf::Vector2u(1440,960));
-		renderBuffers->Build(1440,960,fieldOfView,nearDistance,farDistance);
-		break;
-	case WindowResolutions::R_1280x720:
-		myWindow.setSize(sf::Vector2u(1280,720));
-		renderBuffers->Build(1280,720,fieldOfView,nearDistance,farDistance);
-		break;
-	case WindowResolutions::R_800x600:
-		myWindow.setSize(sf::Vector2u(800,600));
-		renderBuffers->Build(800,600,fieldOfView,nearDistance,farDistance);
-		break;
-	case WindowResolutions::R_640x480:
-		myWindow.setSize(sf::Vector2u(640,480));
-		renderBuffers->Build(640,480,fieldOfView,nearDistance,farDistance);
-		break;
+		case WindowResolutions::R_1920x1080:
+			myWindow.setSize(sf::Vector2u(1920,1080));
+			renderBuffers->Build(1920,1080,fieldOfView,nearDistance,farDistance);
+			break;
+		case WindowResolutions::R_1440x960:
+			myWindow.setSize(sf::Vector2u(1440,960));
+			renderBuffers->Build(1440,960,fieldOfView,nearDistance,farDistance);
+			break;
+		case WindowResolutions::R_1280x720:
+			myWindow.setSize(sf::Vector2u(1280,720));
+			renderBuffers->Build(1280,720,fieldOfView,nearDistance,farDistance);
+			break;
+		case WindowResolutions::R_800x600:
+			myWindow.setSize(sf::Vector2u(800,600));
+			renderBuffers->Build(800,600,fieldOfView,nearDistance,farDistance);
+			break;
+		case WindowResolutions::R_640x480:
+			myWindow.setSize(sf::Vector2u(640,480));
+			renderBuffers->Build(640,480,fieldOfView,nearDistance,farDistance);
+			break;
 	}
 }
 void SetFrameLimit(const int& framelim)
 {
 	switch(framelim)
 	{
-	case FrameLimits::F_120hz:
-		myWindow.setFramerateLimit(120);
-		break;
-	case FrameLimits::F_60hz:
-		myWindow.setFramerateLimit(60);
-		break;
+		case FrameLimits::F_120hz:	myWindow.setFramerateLimit(120); break;
+		case FrameLimits::F_60hz:	myWindow.setFramerateLimit(60);	break;
 	}
-}
-void SetVsync(bool flag)
-{
-	myWindow.setVerticalSyncEnabled(flag);
 }
 void SetFOV(const float& fov)
 {

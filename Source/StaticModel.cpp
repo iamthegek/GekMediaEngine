@@ -6,22 +6,17 @@ StaticModel::StaticModel() : BaseModel()
 	meshes[1] = 0;
 	meshes[2] = 0;
 	maxLOD = curLOD = -1;
-	cutoffLOD[0] = 0.0f;
-	cutoffLOD[1] = 0.0f;
-	type = STATIC_MODEL;
+	cutoffLOD[0] = cutoffLOD[1] = 0.0f;
 	textures[0] = textures[1] = 0;
 }
 
 StaticModel::~StaticModel()
 {
 	for(int i = 0; i < 3; i++)
-		if(meshes[i] != 0)
-			delete meshes[i];
+		SAFE_DELETE(meshes[i]);
 
-	if(textures[0] != 0)
-		delete textures[0];
-	if(textures[1] != 0)
-		delete textures[1];
+	SAFE_DELETE(textures[0]);
+	SAFE_DELETE(textures[1]);
 }
 
 void StaticModel::AddLevelOfDetail(StaticMesh * model, const GLfloat& maxDistance)
@@ -31,9 +26,7 @@ void StaticModel::AddLevelOfDetail(StaticMesh * model, const GLfloat& maxDistanc
 		return;
 	meshes[maxLOD] = model;
 	if(maxLOD < 2)
-	{
 		cutoffLOD[maxLOD] = maxDistance * maxDistance;
-	}
 	curLOD = 0;
 }
 
@@ -48,17 +41,17 @@ void StaticModel::DecideLevelOfDetail(const glm::vec3& cameraPosition)
 		return;
 
 	glm::vec3 toVector = cameraPosition - GetPosition();
-	GLfloat dist = glm::length(toVector);
+	GLfloat dist = glm::dot(toVector, toVector);
 
 	if(dist < cutoffLOD[0]|| maxLOD == 0) //if we are close or do not have lesser level of detail, set to zero
 	{
 		curLOD = 0;
 		if(textures[1] != 0)
-			shadingStatus = SHADING_DIFFUSE_AND_NORMAL;
+			SetShading(MAPPED_DIFFUSE | MAPPED_NORMAL);
 		return;
 	}
 
-	shadingStatus = SHADING_DIFFUSE;
+	SetShading(MAPPED_DIFFUSE);
 	if(dist < cutoffLOD[1] || maxLOD == 1)
 	{
 		curLOD = 1;
@@ -72,13 +65,11 @@ void StaticModel::DecideLevelOfDetail(const glm::vec3& cameraPosition)
 
 void StaticModel::AddColorTexture(const std::string& Filename)
 {
-	if(textures[0] != 0)
-		delete textures[0];
+	SAFE_DELETE(textures[0]);
 	textures[0] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_COLOR);
 }
 void StaticModel::AddNormalTexture(const std::string& Filename)
 {
-	if(textures[1] != 0)
-		delete textures[1];
+	SAFE_DELETE(textures[1]);
 	textures[1] = new Texture(Filename, Texture::ModelTextureTypes::TYPE_NORMAL);
 }

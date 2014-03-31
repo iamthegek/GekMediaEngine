@@ -29,14 +29,14 @@ bool GBuffer::Build(GLsizei width, GLsizei height)
 	//create empty diffuse texture
 	glGenTextures(1, &textures[GBUFFER_DIFFUSE]);
 	glBindTexture(GL_TEXTURE_2D, textures[GBUFFER_DIFFUSE]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB16F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	//create empty normal texture
 	glGenTextures(1, &textures[GBUFFER_NORMAL]);
 	glBindTexture(GL_TEXTURE_2D, textures[GBUFFER_NORMAL]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_FLOAT, 0);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
@@ -79,9 +79,7 @@ void GBuffer::BindForGeomPass()
 {
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	glDrawBuffer(GL_COLOR_ATTACHMENT4);
-	glClearColor(0.1f,0.1f,0.1f,1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(0,0,0,1);
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo);
 	GLenum drawBuffers[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };

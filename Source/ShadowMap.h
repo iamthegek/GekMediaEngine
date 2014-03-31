@@ -34,7 +34,7 @@ public:
 
 private:
 	ShadowBuffer buf[3];
-
+	glm::mat4 camInv;
 	glm::vec3 lightDirection;
 	glm::mat4 lightMatrix[3];			//MVP
 	glm::mat4 lightProjectionMatrix[3];	//P

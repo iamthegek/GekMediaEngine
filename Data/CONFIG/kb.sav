@@ -1,0 +1,8 @@
+<jump> spacebar
+<use> e
+<forward> w
+<backward> s
+<left> a
+<right> d
+<inv_x> false
+<inv_y> false

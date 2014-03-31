@@ -5,7 +5,7 @@ using namespace std;
 
 LightMesh::LightMesh()
 {
-    VAO = buffers[0] = buffers[1] = 0;
+    buffers[0] = buffers[1] = 0;
 }
 LightMesh::~LightMesh()
 { 
@@ -15,15 +15,10 @@ void LightMesh::Clear()
 {
 	if (buffers[0] != 0)	
 		glDeleteBuffers(2, buffers);       
-	if (VAO != 0)			
-		glDeleteVertexArrays(1, &VAO);
-	VAO = 0;
 }
 bool LightMesh::LoadMesh(const string& Filename)
 {
     Clear();
-    glGenVertexArrays(1, &VAO);   
-    glBindVertexArray(VAO);
     glGenBuffers(2, buffers);
     bool Ret = false;
     Assimp::Importer Importer;
@@ -36,7 +31,6 @@ bool LightMesh::LoadMesh(const string& Filename)
 	{
 		printf("Error parsing '%s': '%s'\n", Filename.c_str(), Importer.GetErrorString());
 	}
-    glBindVertexArray(0);	
     return Ret;
 }
 bool LightMesh::InitFromScene(const aiScene* pScene, const string& Filename)
@@ -70,8 +64,6 @@ bool LightMesh::InitFromScene(const aiScene* pScene, const string& Filename)
     // Generate and populate the buffers with vertex attributes and the indices
   	glBindBuffer(GL_ARRAY_BUFFER, buffers[POS_VB]);
     glBufferData(GL_ARRAY_BUFFER, sizeof(Positions[0]) * Positions.size(), &Positions[0], GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);    
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[INDEX_BUFFER]);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(Indices[0]) * Indices.size(), &Indices[0], GL_STATIC_DRAW);
@@ -97,7 +89,10 @@ void LightMesh::InitMesh(const aiMesh* paiMesh, vector<glm::vec3>& Positions, ve
 }
 void LightMesh::Bind()
 {
-	glBindVertexArray(VAO);
+  	glBindBuffer(GL_ARRAY_BUFFER, buffers[POS_VB]);
+    glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[INDEX_BUFFER]);
 }
 void LightMesh::Render()
 {
@@ -108,5 +103,7 @@ void LightMesh::Render()
 }
 void LightMesh::Unbind()
 {
-	glBindVertexArray(0);
+	glDisableVertexAttribArray(0);
+  	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }

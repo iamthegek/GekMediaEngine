@@ -38,6 +38,23 @@ ModelContainer::ModelContainer()
 	aShadowShader.Locate("ViewMatrix");			//1
 	aShadowShader.Locate("LightMvpMatrix");		//2
 	aShadowShader.Locate("gBones");				//3
+
+	//PRE SEND UNIFORMS FOR TEXTURES
+	sdShader.Bind();
+	sdShader.Send(2, 0);
+
+	sdnShader.Bind();
+	sdnShader.Send(2, 0);
+	sdnShader.Send(3, 1);
+
+	adShader.Bind();
+	adShader.Send(2, 0);
+
+	adnShader.Bind();
+	adnShader.Send(2, 0);
+	adnShader.Send(3, 1);
+
+	glUseProgram(0);
 }
 
 ModelContainer::~ModelContainer()
@@ -77,6 +94,9 @@ void ModelContainer::Render(DeferredBuffers* bufs, const float& deltaTime)
 	std::size_t i = 0;
 	StaticModel* sTmp = 0;
 	AnimatedModel* aTmp = 0;
+	glm::mat4 projView = bufs->GetProjectionMatrix() * bufs->GetViewMatrix();
+
+	unsigned int shadowBits[3] = {SHADOW_CLOSE, SHADOW_MEDIUM, SHADOW_FAR};
 
 	lodCalcTimer++;
 	if(lodCalcTimer > 30)
@@ -89,13 +109,13 @@ void ModelContainer::Render(DeferredBuffers* bufs, const float& deltaTime)
 			aTmp = animatedModels[i];
 
 			glm::vec3 toVector = aTmp->GetPosition() - bufs->camPosition;
-			float dist = glm::length(toVector);
+			float dist = glm::dot(toVector, toVector);
 
-			if(dist > 40.0f)
-				aTmp->SetStatus(STATUS_SHADING, SHADING_DIFFUSE);
+			if(dist > 40.0f*40.0f)
+				aTmp->SetShading(MAPPED_DIFFUSE);
 			else
 				if(aTmp->GetTexture(1) != 0)
-					aTmp->SetStatus(STATUS_SHADING, SHADING_DIFFUSE_AND_NORMAL);
+					aTmp->SetShading(MAPPED_DIFFUSE | MAPPED_NORMAL);
 		}
 		lodCalcTimer = 0;
 	}
@@ -106,35 +126,33 @@ void ModelContainer::Render(DeferredBuffers* bufs, const float& deltaTime)
 	//SHADOW PRE RENDERING
 	for(int shadow = 0; shadow < 3; shadow++)
 	{
-		if(bufs->DoShadows(shadow))
+		(bufs->DoShadows(shadow));
+		sShadowShader.Bind();
+		for(i = 0; i < staticModels.size(); i++)
 		{
-			sShadowShader.Bind();
-			for(i = 0; i < staticModels.size(); i++)
+			sTmp = staticModels[i];
+			if(sTmp->GetShadowFlags() & shadowBits[i] && !sTmp->GetCullingFlag())
 			{
-				sTmp = staticModels[i];
-				if(sTmp->GetStatus(STATUS_SHADOW) >= SHADOW_CLOSE + shadow && sTmp->GetStatus(STATUS_CULLING) != CULL_ENABLED)
-				{
-					sShadowShader.Send(0, sTmp->GetMatrix());
-					sShadowShader.Send(1, bufs->GetViewMatrix());
-					sShadowShader.Send(2, bufs->GetShadowMap()->GetLightMatrix(shadow));
+				sShadowShader.Send(0, sTmp->GetMatrix());
+				sShadowShader.Send(1, bufs->GetViewMatrix());
+				sShadowShader.Send(2, bufs->GetShadowMap()->GetLightMatrix(shadow));
 
-					sTmp->GetMesh()->Render();
-				}
+				sTmp->GetMesh()->Render(0x00);
 			}
+		}
 
-			aShadowShader.Bind();
-			for(i = 0; i < animatedModels.size(); i++)
+		aShadowShader.Bind();
+		for(i = 0; i < animatedModels.size(); i++)
+		{
+			aTmp = animatedModels[i];
+			if(aTmp->GetShadowFlags() & shadowBits[i] && !aTmp->GetCullingFlag())
 			{
-				aTmp = animatedModels[i];
-				if(aTmp->GetStatus(STATUS_SHADOW) >= SHADOW_CLOSE + shadow && aTmp->GetStatus(STATUS_CULLING) != CULL_ENABLED)
-				{
-					aShadowShader.Send(0, aTmp->GetMatrix());
-					aShadowShader.Send(1, bufs->GetViewMatrix());
-					aShadowShader.Send(2, bufs->GetShadowMap()->GetLightMatrix(shadow));
-					aShadowShader.Send(3, aTmp->GetBoneTransforms());
+				aShadowShader.Send(0, aTmp->GetMatrix());
+				aShadowShader.Send(1, bufs->GetViewMatrix());
+				aShadowShader.Send(2, bufs->GetShadowMap()->GetLightMatrix(shadow));
+				aShadowShader.Send(3, aTmp->GetBoneTransforms());
 
-					aTmp->GetMesh()->Render();
-				}
+				aTmp->GetMesh()->Render(0x00);
 			}
 		}
 	}
@@ -144,73 +162,67 @@ void ModelContainer::Render(DeferredBuffers* bufs, const float& deltaTime)
 	bufs->SetUpGBuffer();
 
 	//DRAW ALL STATIC MESHES TO GBUFFER
+	sdShader.Bind();
 	for(i = 0; i < staticModels.size(); i++)
 	{
 		sTmp = staticModels[i];
-		if(sTmp->GetStatus(STATUS_CULLING) != CULL_ENABLED)
+		if(!sTmp->GetCullingFlag() && !(sTmp->GetShadingFlags() & MAPPED_NORMAL))
 		{
-			if(sTmp->GetStatus(STATUS_SHADING) == SHADING_DIFFUSE)
-			{
-				sTmp->GetTexture(0)->Bind(GL_TEXTURE0);
+			sTmp->GetTexture(0)->Bind(GL_TEXTURE0);
+			sdShader.Send(0, projView * sTmp->GetMatrix()); 
+			sdShader.Send(1, sTmp->GetMatrix());
+			sTmp->GetMesh()->Render(SEND_NORMALS | SEND_TEXCOORDS);
+		}
+	}
 
-				sdShader.Bind();
-				sdShader.Send(0, bufs->GetProjectionMatrix() * bufs->GetViewMatrix() * sTmp->GetMatrix()); 
-				sdShader.Send(1, sTmp->GetMatrix());
-				sdShader.Send(2, 0);
-
-				sTmp->GetMesh()->Render();
-			}
-			else //SHADING_DIFFUSE_AND_NORMAL
-			{
-				sTmp->GetTexture(0)->Bind(GL_TEXTURE0);
-				sTmp->GetTexture(1)->Bind(GL_TEXTURE1);
-
-				sdnShader.Bind();
-				sdnShader.Send(0, bufs->GetProjectionMatrix() * bufs->GetViewMatrix() * sTmp->GetMatrix()); 
-				sdnShader.Send(1, sTmp->GetMatrix());
-				sdnShader.Send(2, 0); //Texture 0
-				sdnShader.Send(3, 1); //Texture 1
-
-				sTmp->GetMesh()->Render();
-			}
+	sdnShader.Bind();
+	for(i = 0; i < staticModels.size(); i++)
+	{
+		sTmp = staticModels[i];
+		if(!sTmp->GetCullingFlag() && (sTmp->GetShadingFlags() & MAPPED_NORMAL))
+		{
+			sTmp->GetTexture(0)->Bind(GL_TEXTURE0);
+			sTmp->GetTexture(1)->Bind(GL_TEXTURE1);
+			sdnShader.Send(0, projView * sTmp->GetMatrix()); 
+			sdnShader.Send(1, sTmp->GetMatrix());
+			sTmp->GetMesh()->Render(SEND_NORMALS | SEND_TANGENTS | SEND_TEXCOORDS);
 		}
 	}
 
 	//DRAW ALL ANIMATED MESHES TO GBUFFER
+	adShader.Bind();
 	for(i = 0; i < animatedModels.size(); i++)
 	{
 		aTmp = animatedModels[i];
-		if(aTmp->GetStatus(STATUS_CULLING) != CULL_ENABLED)
+		if(!aTmp->GetCullingFlag() && !(aTmp->GetShadingFlags() & MAPPED_NORMAL))
 		{
-			if(aTmp->GetStatus(STATUS_SHADING) == SHADING_DIFFUSE)
-			{
-				aTmp->GetTexture(0)->Bind(GL_TEXTURE0);
+			aTmp->GetTexture(0)->Bind(GL_TEXTURE0);
 
-				adShader.Bind();
-				adShader.Send(0, bufs->GetProjectionMatrix() * bufs->GetViewMatrix() * aTmp->GetMatrix()); 
-				adShader.Send(1, aTmp->GetMatrix());
-				adShader.Send(2, 0);
-				adShader.Send(3, aTmp->GetBoneTransforms());
+			adShader.Send(0, projView * aTmp->GetMatrix()); 
+			adShader.Send(1, aTmp->GetMatrix());
+			adShader.Send(3, aTmp->GetBoneTransforms());
 				
-				aTmp->GetMesh()->Render();
-			}
-			else
-			{
-				aTmp->GetTexture(0)->Bind(GL_TEXTURE0);
-				aTmp->GetTexture(1)->Bind(GL_TEXTURE1);
-
-				adnShader.Bind();
-				adnShader.Send(0, bufs->GetProjectionMatrix() * bufs->GetViewMatrix() * aTmp->GetMatrix()); 
-				adnShader.Send(1, aTmp->GetMatrix());
-				adnShader.Send(2, 0);
-				adnShader.Send(3, 1);
-				adnShader.Send(4, aTmp->GetBoneTransforms());
-				
-				aTmp->GetMesh()->Render();
-			}
+			aTmp->GetMesh()->Render(SEND_NORMALS | SEND_TEXCOORDS);
 		}
 	}
 
+	adnShader.Bind();
+	for(i = 0; i < animatedModels.size(); i++)
+	{
+		aTmp = animatedModels[i];
+		if(!aTmp->GetCullingFlag() && (aTmp->GetShadingFlags() & MAPPED_NORMAL))
+		{
+			aTmp->GetTexture(0)->Bind(GL_TEXTURE0);
+			aTmp->GetTexture(1)->Bind(GL_TEXTURE1);
+
+			adnShader.Send(0, projView * aTmp->GetMatrix()); 
+			adnShader.Send(1, aTmp->GetMatrix());
+			adnShader.Send(4, aTmp->GetBoneTransforms());
+				
+			aTmp->GetMesh()->Render(SEND_NORMALS | SEND_TANGENTS | SEND_TEXCOORDS);
+		}
+	}
+	
 
 	//DRAW TO SCREEN
 	bufs->RenderToScreen();

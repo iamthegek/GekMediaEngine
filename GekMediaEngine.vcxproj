@@ -84,18 +84,15 @@
   <ItemGroup>
     <ClInclude Include="Source\AnimatedModel.h" />
     <ClInclude Include="Source\BaseModel.h" />
-    <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\DeferredBuffers.h" />
     <ClInclude Include="Source\GBuffer.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LightMesh.h" />
     <ClInclude Include="Source\LocalGame.h" />
     <ClInclude Include="Source\ModelContainer.h" />
-    <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\PlayerController.h" />
-    <ClInclude Include="Source\PlayerJoystickController.h" />
-    <ClInclude Include="Source\PlayerPcController.h" />
     <ClInclude Include="Source\MeshCommon.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\ScreenQuadMesh.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\BoneMesh.h" />
@@ -109,7 +106,7 @@
     <ClCompile Include="Source\AnimatedModel.cpp" />
     <ClCompile Include="Source\BaseModel.cpp" />
     <ClCompile Include="Source\BoneMesh.cpp" />
-    <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\DeferredBuffers.cpp" />
     <ClCompile Include="Source\GBuffer.cpp" />
     <ClCompile Include="Source\LightMesh.cpp" />
@@ -117,11 +114,10 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\ModelContainer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\PlayerJoystickController.cpp" />
-    <ClCompile Include="Source\PlayerPcController.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\ShadowBuffer.cpp" />
     <ClCompile Include="Source\ShadowMap.cpp" />
+    <ClCompile Include="Source\Terrain.cpp" />
     <ClCompile Include="Source\StaticMesh.cpp" />
     <ClCompile Include="Source\StaticModel.cpp" />
     <ClCompile Include="Source\Texture.cpp" />

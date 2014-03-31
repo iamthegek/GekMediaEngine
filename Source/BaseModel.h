@@ -4,22 +4,18 @@
 #include <GL\glew.h>
 #include <glm\glm.hpp>
 
-#define STATUS_CULLING 0
-#define CULL_DISABLED 1
-#define CULL_ENABLED 2
+enum
+{
+	MAPPED_DIFFUSE = 0x01,
+	MAPPED_NORMAL = 0x02
+};
 
-#define STATUS_SHADING 10
-#define SHADING_DIFFUSE 11
-#define SHADING_DIFFUSE_AND_NORMAL 12
-
-#define STATUS_SHADOW 30
-#define SHADOW_NONE 31
-#define SHADOW_CLOSE 32
-#define SHADOW_MEDIUM 32
-#define SHADOW_FAR 34
-
-#define STATIC_MODEL 100
-#define ANIMATED_MODEL 101
+enum
+{
+	SHADOW_CLOSE = 0x01,
+	SHADOW_MEDIUM = 0x02,
+	SHADOW_FAR = 0x04
+};
 
 class BaseModel
 {
@@ -31,19 +27,22 @@ public:
 	glm::mat3 GetRotation();
 	glm::vec3 GetPosition();
 
-	void SetStatus(const GLint& which, const GLint& status);
-	GLint GetStatus(const GLint& which);
+	void SetCulling(bool FLAG = false);
+	void SetShadows(const GLuint& FLAGS = 0x00);
+	void SetShading(const GLuint& FLAGS = 0x00);
+
+	GLuint GetShadowFlags();
+	GLuint GetShadingFlags();
+	bool GetCullingFlag();
 
 	GLint GetType();
 
 protected:
-	GLint cullStatus;		//Is this even drawn?
-	GLint shadingStatus;	//How do we shade this?
-	GLint shadowStatus;		//How far out do we render shadows?
-
 	glm::mat4 objectMatrix;
 
-	GLint type;
+	bool culled;
+	GLuint shadowBits;
+	GLuint shadingBits;
 };
 
 #endif

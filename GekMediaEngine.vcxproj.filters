@@ -13,12 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\DeferredRenderer">
-      <UniqueIdentifier>{5935f633-bcbf-4765-9149-a2f02988eb05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\DeferredRenderer">
-      <UniqueIdentifier>{8c212779-aec2-4cef-bdfd-9306e55ec800}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{1a1feb97-bbc5-46d8-91c0-ca18d85867d5}</UniqueIdentifier>
     </Filter>
@@ -28,85 +22,82 @@
     <Filter Include="Source Files\Shaders\Fragment">
       <UniqueIdentifier>{8fb08690-077f-4cf2-9c6a-a9c60cf87cae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Player">
-      <UniqueIdentifier>{d981d210-77eb-45f3-8397-a72c8537105b}</UniqueIdentifier>
+    <Filter Include="Header Files\DeferredBuffers">
+      <UniqueIdentifier>{5935f633-bcbf-4765-9149-a2f02988eb05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Player">
-      <UniqueIdentifier>{35801d71-4709-40b8-bbbe-f7b2647cfadb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\ModelManagement">
+    <Filter Include="Header Files\DeferredBuffers\ModelManagement">
       <UniqueIdentifier>{ffefc50d-2833-4edc-9c44-f6f8adf322a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\ModelManagement">
+    <Filter Include="Source Files\DeferredBuffers">
+      <UniqueIdentifier>{8c212779-aec2-4cef-bdfd-9306e55ec800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DeferredBuffers\ModelManagement">
       <UniqueIdentifier>{c26fd339-e102-4bb8-9221-1770b8f6e092}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Collision">
+      <UniqueIdentifier>{e1ec57e0-2ed8-4e72-92d7-63cdbe20b7d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Collision">
+      <UniqueIdentifier>{91c20c1d-51ca-4295-8d43-798466121c97}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\GBuffer.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Texture.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\LightMesh.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Shader.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\Light.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\ScreenQuadMesh.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\StaticMesh.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\BoneMesh.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\MeshCommon.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShadowBuffer.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShadowMap.h">
-      <Filter>Header Files\DeferredRenderer</Filter>
+      <Filter>Header Files\DeferredBuffers</Filter>
     </ClInclude>
     <ClInclude Include="Source\LocalGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerController.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerJoystickController.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlayerPcController.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>Header Files\Player</Filter>
-    </ClInclude>
     <ClInclude Include="Source\BaseModel.h">
-      <Filter>Header Files\ModelManagement</Filter>
+      <Filter>Header Files\DeferredBuffers\ModelManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\StaticModel.h">
-      <Filter>Header Files\ModelManagement</Filter>
+      <Filter>Header Files\DeferredBuffers\ModelManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\AnimatedModel.h">
-      <Filter>Header Files\ModelManagement</Filter>
+      <Filter>Header Files\DeferredBuffers\ModelManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\ModelContainer.h">
-      <Filter>Header Files\ModelManagement</Filter>
+      <Filter>Header Files\DeferredBuffers\ModelManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\DeferredBuffers.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision.h">
+      <Filter>Header Files\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -114,58 +105,55 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Texture.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\GBuffer.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\LightMesh.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\Shader.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\StaticMesh.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\BoneMesh.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\ShadowBuffer.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\ShadowMap.cpp">
-      <Filter>Source Files\DeferredRenderer</Filter>
+      <Filter>Source Files\DeferredBuffers</Filter>
     </ClCompile>
     <ClCompile Include="Source\LocalGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Input.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
-      <Filter>Source Files\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayerJoystickController.cpp">
-      <Filter>Source Files\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlayerPcController.cpp">
-      <Filter>Source Files\Player</Filter>
-    </ClCompile>
     <ClCompile Include="Source\BaseModel.cpp">
-      <Filter>Source Files\ModelManagement</Filter>
+      <Filter>Source Files\DeferredBuffers\ModelManagement</Filter>
     </ClCompile>
     <ClCompile Include="Source\StaticModel.cpp">
-      <Filter>Source Files\ModelManagement</Filter>
+      <Filter>Source Files\DeferredBuffers\ModelManagement</Filter>
     </ClCompile>
     <ClCompile Include="Source\AnimatedModel.cpp">
-      <Filter>Source Files\ModelManagement</Filter>
+      <Filter>Source Files\DeferredBuffers\ModelManagement</Filter>
     </ClCompile>
     <ClCompile Include="Source\ModelContainer.cpp">
-      <Filter>Source Files\ModelManagement</Filter>
+      <Filter>Source Files\DeferredBuffers\ModelManagement</Filter>
     </ClCompile>
     <ClCompile Include="Source\DeferredBuffers.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision.cpp">
+      <Filter>Source Files\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Terrain.cpp">
+      <Filter>Source Files\Collision</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

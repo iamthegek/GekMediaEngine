@@ -1,0 +1,10 @@
+<usern> player_one
+<coins> 0
+<lives> 3
+<hearts> 6
+<world> default
+<hover_nozzle> unlocked
+<rocket_nozzle> locked
+<turbo_nozzle> locked
+<cur_nozzle> hover
+<pack_fuel> 100

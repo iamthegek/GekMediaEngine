@@ -23,7 +23,13 @@ const int NUM_BONE_MESH_VBs = 6;
 #define BONE_ID_LOCATION     4
 #define BONE_WEIGHT_LOCATION 5
 
-#define NUM_BONES_PER_VEREX  4
+enum{
+	SEND_TEXCOORDS = 0x01,
+	SEND_NORMALS = 0x02,
+	SEND_TANGENTS = 0x04
+};
+
+#define NUM_BONES_PER_VEREX  2
 const int MAX_BONES = 64;
 
 #endif

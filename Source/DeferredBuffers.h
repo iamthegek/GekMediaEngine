@@ -62,7 +62,7 @@ private:
 	GLfloat fieldOfView, nearRenderDistance, farRenderDistance, windowRatio;
 
 	//World Variables
-	glm::mat4 projectionMatrix, viewMatrix;
+	glm::mat4 projectionMatrix, viewMatrix, projViewMatrix;
 
 	//Point Light Variables
 	LightMesh * ptLightMesh;

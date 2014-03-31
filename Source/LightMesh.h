@@ -42,7 +42,6 @@ private:
 		POS_VB
 	};
 
-	GLuint VAO;
 	GLuint buffers[2];
 	std::vector<MeshEntry> m_Entries;
 };

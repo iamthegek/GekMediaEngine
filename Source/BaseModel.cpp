@@ -2,10 +2,9 @@
 
 BaseModel::BaseModel()
 {
-	cullStatus = CULL_DISABLED;
-	shadingStatus = SHADING_DIFFUSE_AND_NORMAL;
-	shadowStatus = SHADOW_FAR;
-	type = -1;
+	SetCulling(false);
+	SetShadows(SHADOW_CLOSE | SHADOW_MEDIUM | SHADOW_FAR);
+	SetShading(0x00);
 
 	objectMatrix = glm::mat4(1.0f);
 }
@@ -21,26 +20,27 @@ glm::vec3 BaseModel::GetPosition()
 {
 	return glm::vec3(objectMatrix[3]);
 }
-void BaseModel::SetStatus(const GLint& which, const GLint& status)
+void BaseModel::SetCulling(bool FLAG)
 {
-	switch(which)
-	{
-		case STATUS_CULLING: cullStatus = status; return;
-		case STATUS_SHADING: shadingStatus = status; return;
-		case STATUS_SHADOW:	shadowStatus = status; return;
-	}
+	culled = FLAG;
 }
-GLint BaseModel::GetStatus(const GLint& which)
+void BaseModel::SetShadows(const GLuint& FLAGS)
 {
-	switch(which)
-	{
-		case STATUS_CULLING: return cullStatus;
-		case STATUS_SHADING: return shadingStatus;
-		case STATUS_SHADOW:	return shadowStatus;
-	}
-	return -1;
+	shadowBits = FLAGS;
 }
-GLint BaseModel::GetType()
+void BaseModel::SetShading(const GLuint& FLAGS)
 {
-	return type;
+	shadingBits = FLAGS;
+}
+GLuint BaseModel::GetShadowFlags()
+{
+	return shadowBits;
+}
+GLuint BaseModel::GetShadingFlags()
+{
+	return shadingBits;
+}
+bool BaseModel::GetCullingFlag()
+{
+	return culled;
 }
